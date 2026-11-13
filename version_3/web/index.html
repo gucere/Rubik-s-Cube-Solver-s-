@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rubik's Cube Solver</title>
+  <link rel="icon" href="icon.png">
+  <link rel="stylesheet" href="style.css">
+  <script type="importmap">{ "imports": { "three": "./vendor/three.module.min.js" } }</script>
+</head>
+<body>
+  <main id="viewport">
+    <canvas id="canvas"></canvas>
+    <div id="hint" class="hint"></div>
+    <div id="toast" class="toast" hidden></div>
+  </main>
+
+  <aside id="panel">
+    <h1>Rubik's Cube Solver</h1>
+
+    <section>
+      <h2>Cube</h2>
+      <div class="row">
+        <label class="inline">Size <input id="size" type="number" min="2" max="12" value="3"></label>
+        <button id="new-cube">New solved cube</button>
+      </div>
+      <div class="tabs">
+        <button class="tab active" data-mode="play">Play</button>
+        <button class="tab" data-mode="paint">Paint</button>
+      </div>
+
+      <div id="play-tools">
+        <div class="row">
+          <label class="inline">Moves <input id="scramble-count" type="number" min="1" max="300" value="25"></label>
+          <button id="scramble">Scramble</button>
+          <button id="undo">Undo</button>
+        </div>
+        <p class="help">Drag a sticker to turn its layer, drag empty space to look around.
+          Keys <kbd>U</kbd> <kbd>D</kbd> <kbd>L</kbd> <kbd>R</kbd> <kbd>F</kbd> <kbd>B</kbd>, hold <kbd>Shift</kbd> for counter-clockwise.</p>
+      </div>
+
+      <div id="paint-tools" hidden>
+        <div id="palette" class="palette"></div>
+        <div class="row">
+          <button id="blank">Blank cube</button>
+          <button id="solved-colors">Solved colors</button>
+          <button id="paint-done" class="primary">Use this cube</button>
+        </div>
+        <p class="help">Pick a color, then click or drag over squares. White is opposite yellow, green opposite blue, red opposite orange.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Solve</h2>
+      <button id="solve-fast" class="primary big">Solve</button>
+      <p id="fast-note" class="help"></p>
+      <div class="grid">
+        <label>Algorithm
+          <select id="method">
+            <option value="kociemba">Kociemba</option>
+            <option value="beam" selected>Beam search</option>
+            <option value="greedy">Greedy search</option>
+          </select>
+        </label>
+        <label>Heuristic
+          <select id="distance">
+            <option value="manhattan">Manhattan</option>
+            <option value="tiles_out_of_place">Tiles out of place</option>
+          </select>
+        </label>
+        <label>Beam width <input id="beam-width" type="number" min="1" max="5000" value="100"></label>
+        <label>Time limit (s) <input id="time-limit" type="number" min="1" max="600" value="30"></label>
+      </div>
+      <button id="solve-with">Solve with Beam search</button>
+      <div class="status-row">
+        <div id="status" class="status"></div>
+        <button id="cancel" hidden>Cancel</button>
+      </div>
+    </section>
+
+    <section id="steps-section" hidden>
+      <h2>Steps <span id="step-count" class="muted"></span></h2>
+      <div class="controls">
+        <button id="first" title="Back to the start">⏮</button>
+        <button id="prev" title="One step back">◀</button>
+        <button id="play" class="primary" title="Play">▶ Play</button>
+        <button id="next" title="One step forward">▶</button>
+        <button id="last" title="Jump to the end">⏭</button>
+      </div>
+      <label class="inline speed">Speed <input id="speed" type="range" min="1" max="10" value="5"></label>
+      <ol id="moves" class="moves"></ol>
+    </section>
+  </aside>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
